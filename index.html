@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Menu Screen — 2 category columns + 1 preview</title>
+    <style>
+        @font-face {
+            font-family: "MyBrand";
+            src: url("./Insignia Regular.otf") format("opentype");
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @import url('https://fonts.cdnfonts.com/css/insignia');
+
+        :root {
+
+            --cream-100: #fffbd6;
+            --cream-200: #ffecb4;
+            --brown-700: #8e5533;
+
+            --bg: var(--cream-100);
+            --panel: var(--cream-200);
+            --card: #fff6c7;
+            --text: #0e1015;
+            --muted: #5c5f66;
+            --accent: var(--brown-700);
+            --good: #007b3d;
+            --radius: 16px;
+
+            --border: #e8dca0;
+            --ui-font: "MyBrand", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font: 18px/1.45 Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+            overflow: hidden;
+            font-family: 'Insignia', sans-serif;
+
+        }
+
+        .page {
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+
+            gap: 16px;
+            padding: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .left {
+            grid-column: 1 / span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 16px;
+            overflow: hidden;
+
+            position: relative;
+
+        }
+
+        .leftScaler {
+            position: absolute;
+            inset: 0;
+            transform-origin: top left;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 16px;
+            padding: 0;
+
+        }
+
+        .category {
+            background: var(--panel);
+            border-color: var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 0;
+
+
+        }
+
+        .cat-title {
+            color: var(--accent);
+            margin: 0 0 8px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #242c43;
+            font-size: 35px;
+            font-weight: 800;
+            letter-spacing: .2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+        }
+
+        .items {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 12px;
+
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 8px;
+            align-items: center;
+
+        }
+
+        .title {
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .price {
+            font-size: 25px;
+            font-weight: 900;
+            color: var(--good);
+            white-space: nowrap;
+            margin-left: 8px;
+        }
+
+        .desc {
+            margin: 2px 0 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.35;
+            max-height: 3.7em;
+            overflow: hidden;
+        }
+
+        .li {
+            background: var(--card);
+            border-color: var(--border);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e7d9b2;
+
+            box-shadow: 6px 6px 12px #e8cd82, -6px -6px 12px #fefebd;
+        }
+
+        .bg {
+            position: fixed;
+            /* растягиваем на весь экран */
+            inset: 0;
+            z-index: -1;
+            /* СТАВИМ ЗА КОНТЕНТ */
+            pointer-events: none;
+            /* не ловит клики */
+            /* ваш паттерн + анимация */
+            --s: 100px;
+            --c1: #0f2e1d;
+            --c2: #34d399;
+            --_g: var(--c2) 6% 14%, var(--c1) 16% 24%, var(--c2) 26% 34%,
+                var(--c1) 36% 44%, var(--c2) 46% 54%, var(--c1) 56% 64%,
+                var(--c2) 66% 74%, var(--c1) 76% 84%, var(--c2) 86% 94%;
+            background:
+                radial-gradient(100% 100% at 100% 0, var(--c1) 4%, var(--_g), #0008 96%, #0000),
+                radial-gradient(100% 100% at 0 100%, #0000, #0008 4%, var(--_g), var(--c1) 96%) var(--c1);
+            background-size: var(--s) var(--s), var(--s) var(--s);
+            background-repeat: repeat;
+            animation: patternSlide 8s linear infinite;
+        }
+
+        @keyframes patternSlide {
+            from {
+                background-position: 0 0, 0 0;
+            }
+
+            to {
+                background-position: calc(-1 * var(--s)) calc(-1 * var(--s)),
+                    calc(-1 * var(--s)) calc(-1 * var(--s));
+            }
+        }
+
+        .bg {
+            filter: hue-rotate(0deg);
+            animation:
+                patternSlide 18s linear infinite,
+                hueSpin 120s linear infinite;
+        }
+
+        @keyframes hueSpin {
+            to {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+
+
+
+        .right {
+            display: flex;
+            flex-direction: column;
+            background: var(--panel);
+            border-color: var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+
+        }
+
+        .previewHeader {
+            padding: 10px 12px;
+
+            font-weight: 800;
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .imageWrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 10 / 11;
+            /* adjust if you prefer another ratio */
+            flex: 1 1 auto;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 0;
+
+
+        }
+
+        .image {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            border-radius: 12px;
+
+            background: #0d122000;
+            box-shadow: 6px 6px 12px #e8cd82, -6px -6px 12px #fefebd;
+        }
+
+        .caption {
+            background: var(--card);
+            border-color: var(--border);
+            border-radius: 12px;
+            padding: 12px;
+
+            flex: 1 1 auto;
+            flex-direction: column;
+
+
+
+            margin: 15px;
+            box-shadow: 6px 6px 12px #e8cd82, -6px -6px 12px #fefebd;
+        }
+
+        .capTitle {
+            color: var(--accent);
+            font-weight: 900;
+            font-size: 40px;
+            margin: 6px
+        }
+
+        .capMeta {
+            display: flex;
+            gap: 12px;
+            align-items: baseline;
+            margin: 6px
+        }
+
+        .capPrice {
+            font-size: 40px;
+            font-weight: 900;
+            color: var(--good);
+
+        }
+
+        .capCat {
+            color: var(--text);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            font-size: 20px;
+            margin: 6px
+        }
+
+        .capDesc {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 30px;
+            line-height: 1.4;
+            max-height: 5.4em;
+            overflow: hidden
+        }
+
+        .icoGroup {
+            display: inline-flex;
+            gap: 6px;
+            align-items: left;
+        }
+
+        .icoGroup img {
+            width: 25px;
+            height: 25px;
+            object-fit: contain
+        }
+
+        .row.no-icons {
+            grid-template-columns: 1fr auto;
+        }
+
+        .icoGroup[hidden] {
+            display: none;
+        }
+
+        @media (max-width: 1100px) {
+            .page {
+                grid-template-columns: 1fr;
+            }
+
+            .left {
+                grid-column: 1;
+                height: 55vh;
+            }
+
+            .right {
+                height: 45vh;
+            }
+
+            .left,
+            .right {
+                overflow: hidden;
+            }
+
+            .leftScaler {
+                transform-origin: top center;
+            }
+        }
+
+        @media (min-width: 1800px) {
+            body {
+                font-size: 20px
+            }
+        }
+
+
+        :root[data-theme="dark-invert"] {
+            -bg: #0e1015;
+            --panel: #141824;
+            --card: #171c29;
+            --muted: #9aa3b2;
+            --text: #e8ecf3;
+            --accent: #4cc9f0;
+            --good: #b7f399;
+            --radius: 16px;
+        }
+
+        /* контейнер слоёв */
+        .slides {
+            position: relative;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            background: var(--img, none) center/cover no-repeat;
+        }
+
+        /* активный слайд виден */
+        .slide.is-active {
+            opacity: 1;
+        }
+
+        /* входящая «психоделика» */
+        .slide.is-in {
+            animation:
+                psyIn 850ms ease-in forwards,
+                hueSpin 1800ms linear forwards;
+        }
+
+        /* исходящий мягко растворяется */
+        .slide.is-out {
+            animation: fadeOut 700ms ease-out forwards;
+        }
+
+        /* подписи под картинкой — мягкий фейд+сдвиг */
+        .caption,
+        .caption>* {
+            transition: opacity 400ms ease, transform 400ms ease, filter 400ms ease;
+        }
+
+        .caption.is-swapping {
+            opacity: 0;
+            transform: translateY(6px);
+            filter: blur(2px);
+        }
+
+        /* ключевые кадры */
+        @keyframes psyIn {
+            0% {
+                opacity: 0;
+                transform: scale(1.06);
+                filter: blur(10px)
+            }
+
+            60% {
+                opacity: 1;
+                transform: scale(1.015);
+                filter: blur(2px)
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1.000);
+                filter: blur(0)
+            }
+        }
+
+
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                filter: blur(0)
+            }
+
+            100% {
+                opacity: 0;
+                filter: blur(6px)
+            }
+        }
+
+        /* лёгкий «rgb-split» отблеск поверх входящего кадра */
+        .slide.is-in::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: inherit;
+            mix-blend-mode: screen;
+            opacity: .25;
+            transform: translateX(1px);
+            filter: hue-rotate(300deg) saturate(1.5) blur(1px);
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <link href="https://fonts.cdnfonts.com/css/insignia" rel="stylesheet">
+                
+    <div class="bg" id="bg" aria-hidden="true"></div>
+
+    <main class="page" id="app">
+        <section class="left" id="left">
+            <div class="leftScaler" id="leftScaler"></div>
+        </section>
+
+        <section class="right" aria-live="polite" aria-atomic="true">
+            <div class="previewHeader" id="previewHeader"></div>
+            <div class="imageWrap">
+                <div class="slides">
+                    <div class="slide" id="slideA" aria-hidden="true"></div>
+                    <div class="slide" id="slideB" aria-hidden="true"></div>
+                </div>
+            </div>
+            <div class="caption">
+                <div class="capCat" id="heroCat">—</div>
+                <h2 class="capTitle" id="heroTitle">—</h2>
+                <div class="capMeta">
+
+                    <div class="capPrice" id="heroPrice">—</div>
+                </div>
+
+                <p class="capDesc" id="heroDesc">—</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+
+        // or back to default:
+        // document.documentElement.removeAttribute('data-theme');
+
+
+        // ==== ДАННЫЕ: используем структуру из предыдущего файла ====
+        const DATA = [
+            {
+                cat: 'Solids 🗿', items: [
+                    { id: 'p1', title: 'Mango Gorilla HHC 40% ', price: '€15,-', img: 'https://headsupplies.nl/cdn/shop/files/jelly-40-hhc-mango-gorilla-1g.webp?v=1712152094&width=390', desc: 'HHC is een natuurlijk bestanddeel afkomstig van hennep en wordt beschouwd als een cannabinoïde die, net als THC, afkomstig is van de cannabisplant.' },
+                    { id: 'p2', title: 'Berries Kush HHC 40%', price: '€15,-', img: 'https://headsupplies.nl/cdn/shop/files/jelly-40-hhc-berries-kush-1g_3f244b02-c79a-4f3b-89bb-8a2ef9642166.webp?v=1715767456&width=390', desc: 'THC: 0,02%' },
+                    { id: 'p3', title: 'Mango Kush HHC 30%', price: '€15,-', img: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.bebidassanjuan.es%2Fwp-content%2Fuploads%2F2023%2F03%2Fhhc_solid_mango_kush-removebg-preview.png&f=1&nofb=1&ipt=b0dd03f33272fd3ec8f45106dccdb47384eea9e87a248ae1268f22cc816b3be6', desc: 'THC: 0,02%' },
+                    { id: 'p4', title: 'Grape Ape H4CBD 30%', price: '€12,-', img: 'https://www.euphoria.eu/user_files/items//y9h-H4CBD-SOLID-Grape-Ape-30-80x173-A-01-PACKSHOT.png', desc: 'H4CBD Solid met 30% H4CBD, Full Spectrum CBD, en Grape Ape terpenen.' },
+                    { id: 'p5', title: 'Blackberry Kush THCV 10%', price: '€10,-', img: 'https://www.euphoria.eu/thumbs/www/hosting/euphoria.eu/www/www/user_files/items/s14-THCV-SOLID-Blackberry-Kush-10-80x173-A-01-PACKSHOT.213439910.1724832043.png', desc: 'Blackberry Kush natural terpenes have a relaxing and pleasing entourage effect. These natural terpenes are identic to aromatic profile of terpenes from original strain Afghani x Blueberry.' }
+                ]
+            },
+            {
+                cat: 'Edibles 🍫', cols: 2, items: [
+                    { id: 'r1', title: '🍮 Spacecake THH', price: '€15,-', img: 'https://cdn.webshopapp.com/shops/112758/files/463746444/1280x1000x3/the-high-company-the-high-company-thch-spacecake-i.jpg', desc: 'Premium THC-H infused collectible' },
+                    { id: 'r2', title: '🍮 Spacecake HH', price: '€15,-', img: 'https://thehighcompany.eu/wp-content/uploads/2022/11/Ontwerp-zonder-titel-93.png', desc: 'Premium HHC-infused collectible' },
+                    { id: 'r3', title: '🍭 Lolipop Cola HH', price: '€7,50', img: 'https://thehighcompany.eu/wp-content/uploads/2024/10/Render_Mockup_1920_1920_2024-10-16.png', desc: 'x2 Cola' },
+                    { id: 'r4', title: '🍭 Lolipop Bubblegum HH', price: '€7,50', img: 'https://thehighcompany.eu/wp-content/uploads/2024/10/Render_Mockup_1920_1920_2024-10-16-2.png', desc: 'x2' },
+                    { id: 'r5', title: '🍭 Lolipop Strawberry HH', price: '€7,50', img: 'https://thehighcompany.eu/wp-content/uploads/2024/10/Render_Mockup_1920_1920_2024-10-16-1.png', desc: 'x2' },
+                    { id: 'r6', title: 'Gummies THP', price: '€14,-', img: 'https://thehighcompany.eu/wp-content/uploads/2024/10/Render_Mockup_1920_1920_2024-10-16-1.png', desc: 'x4 stuks', icon: './gum.png' },
+                    { id: 'r7', title: '👾 Gummies THH', price: '€14,-', img: 'https://thehighcompany.eu/wp-content/uploads/2024/10/Render_Mockup_1920_1920_2024-10-16-1.png', desc: 'x4 stuks' },
+                    { id: 'r8', title: '👾 Gummies Strawberry HH x2', price: '€14,-', img: 'https://thehighcompany.eu/wp-content/uploads/2024/10/Render_Mockup_1920_1920_2024-10-16-1.png', desc: 'x2 stuks' },
+                    { id: 'r9', title: '👾 Gummies Strawberry HH x10', price: '€25,-', img: 'https://thehighcompany.eu/wp-content/uploads/2024/10/Render_Mockup_1920_1920_2024-10-16-1.png', desc: 'x10 stuks' },
+                    { id: 'r10', title: '👾 Gummies Mango H4CBD', price: '€19,95', img: 'https://thehighcompany.eu/wp-content/uploads/2024/10/Render_Mockup_1920_1920_2024-10-16-1.png', desc: 'x10 stuks' },
+                    { id: 'r11', title: '👾 Gummies Cherry THCP x10', price: '€19,95', img: 'https://thehighcompany.eu/wp-content/uploads/2024/10/Render_Mockup_1920_1920_2024-10-16-1.png', desc: 'x10 stuks' }
+                ]
+            },
+            {
+                cat: 'Snus', items: [
+                    { id: 'c1', title: 'THCV Snus Apple Dream', price: '€4.20', img: '', desc: 'Strong' },
+                ]
+            },
+            {
+                cat: 'Cartridge', cols: 2, items: [
+                    { id: 'd1', title: 'HHC Cartridge Amnesia', price: '€29,70', img: '', desc: '97%' },
+                    { id: 'd2', title: 'H4CBD Cartridge Amnesia', price: '€25,-', img: '', desc: '97%' },
+                    { id: 'd3', title: 'H4CBD Cartridge Blueberry', price: '€25,-', img: '', desc: '97%' },
+                    { id: 'd4', title: 'THCV Cartridge Blueberry', price: '€25,-', img: '', desc: '1ml' }
+                ]
+            },
+
+        ];
+
+        // ====== ЛЕВЫЕ 2 КОЛОНКИ: рендер ======
+        const left = document.getElementById('left');
+        const scaler = document.getElementById('leftScaler');
+
+        function renderLeft() {
+            scaler.innerHTML = '';
+            DATA.forEach((group, idx) => {
+
+                const cat = document.createElement('section');
+                cat.className = 'category';
+                const h = document.createElement('h3');
+                h.className = 'cat-title';
+                h.textContent = group.cat;
+                const list = document.createElement('div');
+                list.className = 'items';
+                list.style.gridTemplateColumns = `repeat(${group.cols || 1}, minmax(0, 1fr))`;
+                group.items.forEach(it => {
+                    const icons = Array.isArray(it.icons) ? it.icons : (it.icon ? [it.icon] : []);
+                    const iconsHtml = icons.map(src => `<img src="${src}" alt="" aria-hidden="true">`).join('');
+                    const rowClass = iconsHtml ? 'row' : 'row no-icons';
+                    const li = document.createElement('div');
+                    li.className = 'li';
+                    li.innerHTML = `
+  <div class="${rowClass}">
+    ${iconsHtml ? `<span class="icoGroup" aria-hidden="true">${iconsHtml}</span>` : `<span class="icoGroup" aria-hidden="true" hidden></span>`}
+    <div class="title">${it.title}</div>
+    <div class="price">${it.price}</div>
+  </div>
+  <div class="desc">${it.desc}</div>
+    `;
+                    list.appendChild(li);
+                });
+                cat.append(h, list);
+                scaler.appendChild(cat);
+            });
+        }
+
+        // Подгон масштаба, чтобы всё уместилось в высоту без скролла
+        function fitLeft() {
+            const maxH = left.clientHeight;
+            const needH = scaler.scrollHeight;
+            let scale = 1;
+            if (needH > maxH) {
+                scale = (maxH - 8) / needH; // небольшой зазор
+                scale = Math.max(0.6, Math.min(1, scale)); // не уменьшаем ниже 60%
+            }
+            scaler.style.transform = `scale(${scale})`;
+            // Компенсируем ширину после scale, чтобы сетка не схлопнулась
+            scaler.style.width = scale < 1 ? `${100 / scale}%` : '100%';
+            scaler.style.height = 'auto';
+        }
+
+        // ====== ПРАВАЯ КОЛОНКА: превью с авто-циклом ======
+        const FLAT = DATA.flatMap(g => g.items.map(it => ({ ...it, cat: g.cat })));
+        let current = 0;
+        const heroImg = document.getElementById('heroImg');
+        const heroCat = document.getElementById('heroCat');
+        const heroTitle = document.getElementById('heroTitle');
+        const heroDesc = document.getElementById('heroDesc');
+        const heroPrice = document.getElementById('heroPrice');
+        const header = document.getElementById('previewHeader');
+        const slideA = document.getElementById('slideA');
+        const slideB = document.getElementById('slideB');
+        let useA = true; // какой слой следующий
+
+
+        function show(i) {
+            current = (i + FLAT.length) % FLAT.length;
+            const it = FLAT[current];
+
+            // подписи — мягко скрыть перед сменой
+            const caption = document.querySelector('.caption');
+            caption.classList.add('is-swapping');
+
+            // какой слой входящий/исходящий
+            const incoming = useA ? slideA : slideB;
+            const outgoing = useA ? slideB : slideA;
+
+            // подготовка входящего кадра
+            incoming.style.setProperty('--img', `url("${it.img}")`);
+            incoming.classList.remove('is-out');
+            outgoing.classList.remove('is-in');
+
+            // запустить анимации
+            incoming.classList.add('is-active', 'is-in');
+            outgoing.classList.add('is-out');
+            outgoing.classList.remove('is-active');
+
+            // обновить подписи после небольшой задержки (совпадает с fade)
+            setTimeout(() => {
+                heroCat.textContent = it.cat;
+                heroTitle.textContent = it.title;
+                heroDesc.textContent = it.desc;
+                heroPrice.textContent = it.price;
+                caption.classList.remove('is-swapping');
+            }, 220); // хватит ~200–250ms, чтобы не мигало
+
+            // переключить буфер на следующий раз
+            useA = !useA;
+        }
+
+
+        function start() {
+            renderLeft();
+            show(0);
+            fitLeft();
+            setInterval(() => show(current + 1), 10000); // 30 сек
+        }
+
+        window.addEventListener('resize', fitLeft);
+        start();
+
+    </script>
+</body>
+
+</html>
